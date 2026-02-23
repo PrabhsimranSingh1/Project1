@@ -3,9 +3,9 @@
 Product Owner: Prabhsimran Singh
 - Decides features and priorities
 
-Scrum Master: Prathana Gautam
+Scrum Master: Abinas Sigdel
 - Organises meetings and keeps board updated
 
 Developers:
-- Abinas Sigdel – Backend / Database
+- Prathana Gautam – Backend / Database
 - Vaibhav Jha – Backend / Reports
