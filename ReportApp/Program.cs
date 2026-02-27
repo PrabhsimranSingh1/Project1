@@ -11,7 +11,8 @@ class Program
     {
         // CHANGE Password= to your real root password
         var connectionString = "Server=localhost;Database=world;User=root;Password=prabhjohal04197@;Port=3306;";
-
+        // connection string details are for local setup. 
+        connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION");
         try
         {
             using var connection = new MySqlConnection(connectionString);
