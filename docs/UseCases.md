@@ -60,3 +60,73 @@
 - Alternate flows:
   - DB error → show error → return to menu.
 - Postconditions: Language stats displayed.
+
+  ## UC-05: Generate report — Cities ordered by population
+- Primary actor: User
+- Preconditions: MySQL running; world DB available; app can connect.
+- Trigger: User selects “Cities by population”.
+- Main flow:
+  1. System shows menu.
+  2. User selects report.
+  3. System queries DB sorted by population desc.
+  4. System formats and displays results.
+  5. System returns to menu.
+- Alternate flows:
+  - DB connection fails → show error → return to menu.
+  - No rows → show “No data” → return to menu.
+- Postconditions: Report displayed or error shown.
+
+  ## UC-06: Generate report — Capital Cities ordered by population
+- Primary actor: User
+- Preconditions: MySQL running; world DB available; app can connect.
+- Trigger: User selects “Capital cities by population”.
+- Main flow:
+  1. System shows menu.
+  2. User selects report.
+  3. System queries DB sorted by population desc.
+  4. System formats and displays results.
+  5. System returns to menu.
+- Alternate flows:
+  - DB connection fails → show error → return to menu.
+  - No rows → show “No data” → return to menu.
+- Postconditions: Report displayed or error shown.
+
+  ## UC-07: Generate report — Top N countries by population (world)
+- Primary actor: User
+- Preconditions: DB connection available.
+- Trigger: User selects “Top N countries (world)”.
+- Main flow:
+  1. System shows menu.
+  2. User selects report.
+  3. System prompts for N.
+  4. User enters N.
+  5. System validates N.
+  6. System queries DB (ORDER BY population DESC LIMIT N).
+  7. System displays results.
+  8. System returns to menu.
+- Alternate flows:
+  - Invalid N → show guidance → re-prompt.
+  - DB error → show error → return to menu.
+- Postconditions: Top-N report displayed.
+
+UC-08: Generate report — City vs Non-City population (country)
+- Primary actor: User
+- Preconditions: DB connection available.
+- Trigger: User selects “City vs Non-City population (country)”.
+Main flow:
+1. System shows menu.
+2. User selects report.
+3. System prompts for a country code or country name.
+4. User enters a country identifier.
+5. System validates that the country exists.
+6. System queries DB to retrieve:
+    -Total population from the country table.
+    -Total city population from the city table.
+7. System calculates non-city population
+8. NonCityPopulation = TotalPopulation − CityPopulation
+9. System displays results in a formatted table.
+System returns to menu.
+Alternate flows:
+    - Invalid country → show guidance → re-prompt.
+    - DB error → show error → return to menu.
+Postconditions: City vs non-city population report displayed.
