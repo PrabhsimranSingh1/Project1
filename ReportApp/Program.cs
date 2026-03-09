@@ -1,15 +1,98 @@
 ﻿using MySql.Data.MySqlClient;
-
 using System;
-// Use ONE of these depending on what you installed:
-// using MySql.Data.MySqlClient;
+using System.Collections.Generic;
+using System.Linq;
+
+public static class Db
+{
+    public static string ConnectionString =
+        "Server=localhost;Database=world;User=root;Password=prabhjohal04197@;Port=3306;";
+
+    public static List<Dictionary<string, object>> Query(string sql, Dictionary<string, object>? parameters = null)
+    {
+        var rows = new List<Dictionary<string, object>>();
+
+        using var conn = new MySqlConnection(ConnectionString);
+        conn.Open();
+
+        using var cmd = new MySqlCommand(sql, conn);
+
+        if (parameters != null)
+        {
+            foreach (var p in parameters)
+                cmd.Parameters.AddWithValue(p.Key, p.Value);
+        }
+
+        using var reader = cmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            var row = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+            for (int i = 0; i < reader.FieldCount; i++)
+                row[reader.GetName(i)] = reader.GetValue(i);
+
+            rows.Add(row);
+        }
+
+        return rows;
+    }
+}
+
+
+
+
+public static class Print
+{
+    public static void Table(List<Dictionary<string, object>> rows, params string[] columns)
+    {
+        if (rows.Count == 0)
+        {
+            Console.WriteLine("No results.");
+            return;
+        }
+
+        // Column widths
+        var widths = new Dictionary<string, int>();
+        foreach (var c in columns)
+        {
+            int max = c.Length;
+            foreach (var r in rows)
+            {
+                var v = r.ContainsKey(c) ? r[c]?.ToString() ?? "" : "";
+                if (v.Length > max) max = v.Length;
+            }
+            widths[c] = Math.Min(max, 40); // cap to avoid huge columns
+        }
+
+        // Header
+        foreach (var c in columns)
+            Console.Write(c.PadRight(widths[c] + 2));
+        Console.WriteLine();
+
+        foreach (var c in columns)
+            Console.Write(new string('-', widths[c]) + "  ");
+        Console.WriteLine();
+
+        // Rows
+        foreach (var r in rows)
+        {
+            foreach (var c in columns)
+            {
+                var v = r.ContainsKey(c) ? r[c]?.ToString() ?? "" : "";
+                if (v.Length > 40) v = v[..37] + "...";
+                Console.Write(v.PadRight(widths[c] + 2));
+            }
+            Console.WriteLine();
+        }
+    }
+}
 
 
 class Program
 {
     static void Main()
     {
-        // CHANGE Password= to your real root password
+        
         var connectionString = "Server=localhost;Database=world;User=root;Password=prabhjohal04197@;Port=3306;";
         // connection string details are for local setup. 
         connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION");
