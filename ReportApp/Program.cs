@@ -100,6 +100,51 @@ public static partial class Reports
     }
 }
 
+public static class Reports
+{
+    public static void CountriesByPopulation()
+    {
+        string sql = @"
+            SELECT Name AS Country, Population
+            FROM country
+            ORDER BY Population DESC;";
+ 
+        var rows = Db.Query(sql);
+        Print.Table(rows, "Country", "Population");
+public static partial class Reports
+{
+    public static void CityVsNonCityPopulation(string countryCode)
+    {
+        string sql = @"
+            SELECT 
+                co.Name AS Country,
+                co.Population AS TotalPopulation,
+                IFNULL(SUM(ci.Population), 0) AS CityPopulation,
+                (co.Population - IFNULL(SUM(ci.Population), 0)) AS NonCityPopulation
+            FROM country co
+            LEFT JOIN city ci ON ci.CountryCode = co.Code
+            WHERE co.Code = @code
+            GROUP BY co.Code, co.Name, co.Population;";
+ 
+        var rows = Db.Query(sql, new() { ["@code"] = countryCode });
+        Print.Table(rows, "Country", "TotalPopulation", "CityPopulation", "NonCityPopulation");
+    public static void LanguageStatistics()
+    {
+        string sql = @"
+            SELECT 
+                cl.Language,
+                ROUND(SUM(co.Population * (cl.Percentage / 100))) AS EstimatedSpeakers,
+                ROUND((SUM(co.Population * (cl.Percentage / 100)) / (SELECT SUM(Population) FROM country)) * 100, 2) AS WorldPercent
+            FROM countrylanguage cl
+            JOIN country co ON co.Code = cl.CountryCode
+            WHERE cl.Language IN ('Chinese','English','Hindi','Spanish','Arabic')
+            GROUP BY cl.Language
+            ORDER BY EstimatedSpeakers DESC;";
+ 
+        var rows = Db.Query(sql);
+        Print.Table(rows, "Language", "EstimatedSpeakers", "WorldPercent");
+    }
+}
 
 class Program
 {
