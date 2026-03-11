@@ -86,6 +86,17 @@ public static class Print
         }
     }
 }
+public static class Reports
+{
+    public static void CountriesByPopulation()
+    {
+        string sql = @"
+            SELECT Name AS Country, Population
+            FROM country
+            ORDER BY Population DESC;";
+ 
+        var rows = Db.Query(sql);
+        Print.Table(rows, "Country", "Population");
 public static partial class Reports
 {
     public static void CityVsNonCityPopulation(string countryCode)
