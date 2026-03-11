@@ -88,6 +88,21 @@ public static class Print
 }
 public static partial class Reports
 {
+    public static void CityVsNonCityPopulation(string countryCode)
+    {
+        string sql = @"
+            SELECT 
+                co.Name AS Country,
+                co.Population AS TotalPopulation,
+                IFNULL(SUM(ci.Population), 0) AS CityPopulation,
+                (co.Population - IFNULL(SUM(ci.Population), 0)) AS NonCityPopulation
+            FROM country co
+            LEFT JOIN city ci ON ci.CountryCode = co.Code
+            WHERE co.Code = @code
+            GROUP BY co.Code, co.Name, co.Population;";
+ 
+        var rows = Db.Query(sql, new() { ["@code"] = countryCode });
+        Print.Table(rows, "Country", "TotalPopulation", "CityPopulation", "NonCityPopulation");
     public static void LanguageStatistics()
     {
         string sql = @"
