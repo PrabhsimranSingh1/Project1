@@ -86,7 +86,25 @@ public static class Print
         }
     }
 }
-
+public static partial class Reports
+{
+    public static void LanguageStatistics()
+    {
+        string sql = @"
+            SELECT 
+                cl.Language,
+                ROUND(SUM(co.Population * (cl.Percentage / 100))) AS EstimatedSpeakers,
+                ROUND((SUM(co.Population * (cl.Percentage / 100)) / (SELECT SUM(Population) FROM country)) * 100, 2) AS WorldPercent
+            FROM countrylanguage cl
+            JOIN country co ON co.Code = cl.CountryCode
+            WHERE cl.Language IN ('Chinese','English','Hindi','Spanish','Arabic')
+            GROUP BY cl.Language
+            ORDER BY EstimatedSpeakers DESC;";
+ 
+        var rows = Db.Query(sql);
+        Print.Table(rows, "Language", "EstimatedSpeakers", "WorldPercent");
+    }
+}
 
 class Program
 {
