@@ -86,6 +86,20 @@ public static class Print
         }
     }
 }
+public static partial class Reports
+{
+    public static void CitiesByPopulation()
+    {
+        string sql = @"
+            SELECT Name AS City, CountryCode, District, Population
+            FROM city
+            ORDER BY Population DESC;";
+ 
+        var rows = Db.Query(sql);
+        Print.Table(rows, "City", "CountryCode", "District", "Population");
+    }
+}
+
 public static class Reports
 {
     public static void CountriesByPopulation()
