@@ -183,6 +183,22 @@ public static class Reports
 
 
 }
+public static partial class Reports
+{
+    public static void TopNCountriesWorld(int n)
+    {
+        string sql = @"
+            SELECT Name AS Country, Population
+            FROM country
+            ORDER BY Population DESC
+            LIMIT @n;";
+ 
+        var rows = Db.Query(sql, new() { ["@n"] = n });
+        Print.Table(rows, "Country", "Population");
+    }
+}
+ 
+ 
 
 
 class Program
