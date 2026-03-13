@@ -181,10 +181,6 @@ public static class Reports
             
     }
 
-
-}
-public static partial class Reports
-{
     public static void TopNCountriesWorld(int n)
     {
         string sql = @"
@@ -211,6 +207,7 @@ public static partial class Reports
         Print.Table(rows, "CapitalCity", "Country", "Population");
     }
 }
+
 
 
 class Program
