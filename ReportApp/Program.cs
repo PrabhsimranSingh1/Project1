@@ -199,6 +199,18 @@ public static partial class Reports
 }
  
  
+    public static void CapitalsByPopulation()
+    {
+        string sql = @"
+            SELECT ci.Name AS CapitalCity, co.Name AS Country, ci.Population
+            FROM country co
+            JOIN city ci ON co.Capital = ci.ID
+            ORDER BY ci.Population DESC;";
+ 
+        var rows = Db.Query(sql);
+        Print.Table(rows, "CapitalCity", "Country", "Population");
+    }
+}
 
 
 class Program
