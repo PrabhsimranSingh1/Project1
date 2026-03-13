@@ -215,6 +215,11 @@ class Program
     static void Main()
     {
         while (true)
+        
+        var connectionString = "Server=localhost;Database=world;User=root;Password=prabhjohal04197@;Port=3306;";
+        // connection string details are for local setup. 
+        connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION");
+        try
         {
             Console.WriteLine("\n--- Population Reporting System ---");
             Console.WriteLine("1) Countries by population");
@@ -237,12 +242,12 @@ class Program
                 {
                     case "1": Reports.CountriesByPopulation(); break;
                     case "2": Reports.CitiesByPopulation(); break;
-                   // case "3": Reports.CapitalsByPopulation(); break;
-                   // case "4":
-                   //     Console.Write("Enter N: ");
-                   //     int n1 = int.Parse(Console.ReadLine()!);
-                   //     Reports.TopNCountriesWorld(n1);
-                   //     break;
+                    case "3": Reports.CapitalsByPopulation(); break;
+                    case "4":
+                        Console.Write("Enter N: ");
+                        int n1 = int.Parse(Console.ReadLine()!);
+                        Reports.TopNCountriesWorld(n1);
+                        break;
                     case "5":
                         Console.Write("Enter N: ");
                         int n = int.Parse(Console.ReadLine()!);
@@ -270,4 +275,4 @@ class Program
     }
 }
 
-//code review 3
+
