@@ -6,6 +6,8 @@ using System.Linq;
 
 public static class Db
 {
+     // Connection string to the local MySQL 'world' database.
+ // Update credentials as needed for your environment.
     public static string ConnectionString =
         "Server=localhost;Database=world;User=root;Password=prabhjohal04197@;Port=3306;";
 
@@ -112,6 +114,7 @@ public static class Reports
     }
     
     public static void TopNCitiesWorld(int n)
+         // Top N cities worldwide (parameterized to avoid SQL injection)
     {
         string sql = @"
         SELECT Name AS City, CountryCode, District, Population
@@ -146,6 +149,7 @@ public static class Reports
         Print.Table(rows, "Region", "TotalPopulation");
     }
     public static void CityVsNonCityPopulation(string countryCode)
+         // Compare city population vs non-city population for a single country code
         {
             string sql = @"
             SELECT 
@@ -164,7 +168,7 @@ public static class Reports
     
     public static void LanguageStatistics()
     {
-            
+          // Estimated speaker counts for five major languages and percent of world population   
                 string sql = @"
             SELECT 
                 cl.Language,
@@ -181,7 +185,8 @@ public static class Reports
             
     }
 
-    public static void TopNCountriesWorld(int n)
+    public static void TopNCountriesWorld(int n) 
+         // Top N countries worldwide by population
     {
         string sql = @"
             SELECT Name AS Country, Population
@@ -193,6 +198,7 @@ public static class Reports
         Print.Table(rows, "Country", "Population");
     }
     public static void CapitalsByPopulation()
+        // Capitals ordered by population (joins country to capital city table)
     {
         string sql = @"
             SELECT ci.Name AS CapitalCity, co.Name AS Country, ci.Population
@@ -210,6 +216,7 @@ public static class Reports
 
 class Program
 {
+     // Simple console menu loop that lets the user run reports repeatedly.
     static void Main()
     {
         while (true)
