@@ -188,13 +188,10 @@ public static class Reports
             FROM country
             ORDER BY Population DESC
             LIMIT @n;";
- 
+
         var rows = Db.Query(sql, new() { ["@n"] = n });
         Print.Table(rows, "Country", "Population");
     }
-}
- 
- 
     public static void CapitalsByPopulation()
     {
         string sql = @"
@@ -202,12 +199,13 @@ public static class Reports
             FROM country co
             JOIN city ci ON co.Capital = ci.ID
             ORDER BY ci.Population DESC;";
- 
+
         var rows = Db.Query(sql);
         Print.Table(rows, "CapitalCity", "Country", "Population");
     }
-}
 
+
+}
 
 
 class Program
@@ -215,11 +213,6 @@ class Program
     static void Main()
     {
         while (true)
-        
-        var connectionString = "Server=localhost;Database=world;User=root;Password=prabhjohal04197@;Port=3306;";
-        // connection string details are for local setup. 
-        connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION");
-        try
         {
             Console.WriteLine("\n--- Population Reporting System ---");
             Console.WriteLine("1) Countries by population");
