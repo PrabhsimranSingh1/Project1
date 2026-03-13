@@ -19,6 +19,7 @@ public static class Db
         conn.Open();
 
         using var cmd = new MySqlCommand(sql, conn);
+          // Add parameters safely to avoid SQL injection.
 
         if (parameters != null)
         {
@@ -27,6 +28,8 @@ public static class Db
         }
 
         using var reader = cmd.ExecuteReader();
+         // Dynamically read all columns into a dictionary.
+        // This allows the method to work with ANY SELECT query.
 
         while (reader.Read())
         {
@@ -75,6 +78,8 @@ public static class Print
         foreach (var c in columns)
             Console.Write(new string('-', widths[c]) + "  ");
         Console.WriteLine();
+          // Print each row with aligned columns.
+        // Long values are truncated with "..." for readability.
 
         // Rows
         foreach (var r in rows)
@@ -150,6 +155,8 @@ public static class Reports
     }
     public static void CityVsNonCityPopulation(string countryCode)
          // Compare city population vs non-city population for a single country code
+          // LEFT JOIN ensures countries with no cities still appear.
+        // IFNULL prevents NULL values when no cities exist.
         {
             string sql = @"
             SELECT 
@@ -219,6 +226,7 @@ class Program
      // Simple console menu loop that lets the user run reports repeatedly.
     static void Main()
     {
+          // try/catch ensures the program continues even if a report fails.
         while (true)
         {
             Console.WriteLine("\n--- Population Reporting System ---");
