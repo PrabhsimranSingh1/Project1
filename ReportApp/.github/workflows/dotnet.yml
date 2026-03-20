@@ -10,10 +10,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: ReportApp   
-
     steps:
       - uses: actions/checkout@v4
 
@@ -22,8 +18,11 @@ jobs:
         with:
           dotnet-version: '6.0.x'
 
+      - name: Show files
+        run: ls -R
+
       - name: Restore
-        run: dotnet restore
+        run: dotnet restore ReportApp/ReportApp.csproj
 
       - name: Build
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build ReportApp/ReportApp.csproj --configuration Release --no-restore
