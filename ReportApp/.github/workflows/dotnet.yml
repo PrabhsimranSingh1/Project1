@@ -2,25 +2,28 @@ name: .NET CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, develop ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, develop ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: ReportApp   
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '6.0.x'
 
-      - name: Restore dependencies
-        run: dotnet restore ReportApp.csproj
+      - name: Restore
+        run: dotnet restore
 
-      - name: Build project
-        run: dotnet build ReportApp.csproj --configuration Release --no-restore
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
